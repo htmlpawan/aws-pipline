@@ -18,6 +18,14 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.SSH_PRIVATE_KEY }}
 
+      - name: Test SSH Connection
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@13.201.190.2 'echo "SSH connection successful"'
+
+      - name: Check Directory Permissions
+        run: |
+          ssh -o StrictHostKeyChecking=no ubuntu@13.201.190.2 'ls -ld /var/www/html'
+
       - name: Sync files to EC2
         run: |
           rsync -avz -e "ssh -o StrictHostKeyChecking=no" --exclude='.git*' ./ ubuntu@13.201.190.2:/var/www/html
